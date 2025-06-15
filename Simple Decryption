@@ -1,0 +1,19 @@
+// The given ciphertext is encrypted using a shift cipher. Find the plaintext and the key. Ciphertext: VDKBNLDSNBNLOTSDQRDBTQHSX
+
+import string
+
+def decrypt_string(ciphertext, shift):
+    alphabet = string.ascii_uppercase
+    decrypted_text = ''
+    for char in ciphertext:
+        if char in alphabet:
+            idx = (alphabet.index(char) - shift) % 26
+            decrypted_text += alphabet[idx]
+        else:
+            decrypted_text += char
+    return decrypted_text
+
+ciphertext = "VDKBNLDSNBNLOTSDQRDBTQHSX"
+
+decryptions_result = {shift: decrypt_string(ciphertext, shift) for shift in range(26)}
+decryptions_result
