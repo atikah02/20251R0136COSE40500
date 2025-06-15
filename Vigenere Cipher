@@ -1,0 +1,41 @@
+// Problem 2 :
+
+// The given ciphertext is encrypted using a Vigenere cipher. Find the plaintext and the key.
+
+// Ciphertext: FFJFSFPYRUSBZLCFMFBIEIMFFZR
+
+// (The key length is 3) (Hint: the plaintext starts with 'A')
+
+
+import string
+
+def decrypt_string(ciphertext, key):
+    alphabet = string.ascii_uppercase
+    decrypted_text = []
+    key_indices = [alphabet.index(k) for k in key]
+    key_length = len(key_indices)
+
+    for i, char in enumerate(ciphertext):
+        if char in alphabet:
+            shift = key_indices[i % key_length]
+            decrypted_index = (alphabet.index(char) - shift) % 26
+            decrypted_text.append(alphabet[decrypted_index])
+        else:
+            decrypted_text.append(char)
+
+    return ''.join(decrypted_text)
+
+ciphertext = "FFJFSFPYRUSBZLCFMFBIEIMFFZR"
+
+# Key starts with 'F', find possible second and third letters
+possible_plaintexts = []
+
+for second_letter in string.ascii_uppercase:
+    for third_letter in string.ascii_uppercase:
+        key = 'F' + second_letter + third_letter  # Key starts with 'F'
+        plaintext = decrypt_string(ciphertext, key)
+        possible_plaintexts.append((key, plaintext))
+
+# Print possible keys and their corresponding decrypted texts
+for key, plaintext in possible_plaintexts:
+    print(f"Decrypted text with key '{key}': {plaintext}")
