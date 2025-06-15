@@ -1,0 +1,52 @@
+//Problem 3 :
+//The given ciphertext is encrypted by two steps:
+//Step 1. Vigenere cipher with key length of 3 (The first letter of the vigenere cipher key is "T")
+//Step 2. Shift cipher
+//Find the plaintext and the key, and keys used for Vigenere cipher and the shift cipher.
+//Ciphertext: YJZAGBATXHVAEVHCZXSOTAIXWZWS
+//(Hint: The 4th, 7th, 11th, 14th, and 22nd letters of the plaintext are the same!)
+
+
+import string
+
+def vigenere_decrypt(ciphertext, key):
+    alphabet = string.ascii_uppercase
+    decrypted_text = []
+    key_indices = [alphabet.index(k) for k in key]
+    key_length = len(key_indices)
+
+    for i, char in enumerate(ciphertext):
+        if char in alphabet:
+            shift = key_indices[i % key_length]
+            decrypted_index = (alphabet.index(char) - shift) % 26
+            decrypted_text.append(alphabet[decrypted_index])
+        else:
+            decrypted_text.append(char)
+
+    return ''.join(decrypted_text)
+
+def cipher_decrypt(ciphertext, shift):
+    alphabet = string.ascii_uppercase
+    decrypted_text = ''
+
+    for char in ciphertext:
+        if char in alphabet:
+            idx = (alphabet.index(char) - shift) % 26
+            decrypted_text += alphabet[idx]
+        else:
+            decrypted_text += char
+
+    return decrypted_text
+
+ciphertext = "YJZAGBATXHVAEVHCZXSOTAIXWZWS"
+vigenere_partial_key = "T"
+
+# Iterate through possible second and third letters of the Vigenère key
+for second_letter in string.ascii_uppercase:
+    for third_letter in string.ascii_uppercase:
+        key = "T" + second_letter + third_letter
+        decrypted_vigenere = vigenere_decrypt(ciphertext, key)
+
+        for shift_key in range(26):
+            final_plaintext = cipher_decrypt(decrypted_vigenere, shift_key)
+            print(f"Vigenère Key: {key}, Shift Cipher Key: {shift_key}, Final Plaintext: {final_plaintext}")
